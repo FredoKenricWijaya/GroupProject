@@ -34,9 +34,8 @@ class AboutUsController extends Controller
             // Get the file from the request
             $file = $request->file('image');
 
-            // Store the file in the "about_images" folder within the "GroupProject" folder
-            $path = 'about_images/' . $file->getClientOriginalName();
-            Storage::disk('google')->put($path, file_get_contents($file));
+            // Store the file in the Google Drive disk
+            $path = Storage::disk('google')->putFile('about_images', $file);
 
             // Create the AboutUs record in the database
             $AboutUs = AboutUs::create([
@@ -67,7 +66,7 @@ class AboutUsController extends Controller
                 // Delete the old image if it exists
                 if ($about_us->image) {
                     // Delete the old image from the "GroupProject" folder on your driver
-                    Storage::disk('Google')->delete($about_us->image);
+                    Storage::disk('google')->delete($about_us->image);
                 }
 
                 // Store the new image in the "GroupProject" folder on your driver
