@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TestimonyController;
 use Illuminate\Http\Request;
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -26,4 +27,10 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/contact_us/{id}', [ContactUsController::class, 'destroy']);
 
     Route::get('/social_media', [SocialMediaController::class, 'index']);
+
+    Route::get('/testimonies', [TestimonyController::class, 'index']);
+    Route::get('/testimonies/{id}', [TestimonyController::class, 'show']);
+    Route::post('/testimonies', [TestimonyController::class, 'store']);
+    Route::post('/testimonies/{id}', [TestimonyController::class, 'update']);
+    Route::delete('/testimonies/{id}', [TestimonyController::class, 'destroy']);
 });
