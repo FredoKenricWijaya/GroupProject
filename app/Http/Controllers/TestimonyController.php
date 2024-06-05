@@ -29,7 +29,7 @@ class TestimonyController extends Controller
     public function store(StoreTestimonyRequest $request)
     {
         try {
-            $path = $request->file('image')->store('testimonies_images', 'public');
+            $path = $request->file('image')->store('testimony_images', 'public');
 
             $testimony = Testimonies::create([
                 'image' => $path,
