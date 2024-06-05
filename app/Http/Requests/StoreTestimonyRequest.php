@@ -22,7 +22,7 @@ class StoreTestimonyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000',
             'name' => 'required|string',
             'business_name' => 'required|string',
             'description' => 'required|string',

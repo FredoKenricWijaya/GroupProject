@@ -22,7 +22,7 @@ class UpdateTestimonyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:8000',
             'name' => 'sometimes|required|string',
             'business_name' => 'sometimes|required|string',
             'description' => 'sometimes|required|string',
