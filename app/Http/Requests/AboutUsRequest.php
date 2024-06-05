@@ -17,15 +17,8 @@ class AboutUsRequest extends FormRequest
     {
         $rules = [
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:102400',
         ];
-
-        if ($this->isMethod('post')) {
-            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
-        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            $rules['image'] = 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
-            $rules['description'] = 'sometimes|required|string';
-        }
 
         return $rules;
     }
