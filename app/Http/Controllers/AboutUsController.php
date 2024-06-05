@@ -65,10 +65,10 @@ class AboutUsController extends Controller
                     Storage::disk('google')->delete($about_us->image);
                 }
 
-                // Store the new image
-                $path = 'about_images/' . $request->file('image')->getClientOriginalName();
-                Storage::disk('google')->put($path, file_get_contents($request->file('image')));
-                $about_us->image = $path;
+                // Store the new image with a unique name
+                $newFileName = 'about_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+                Storage::disk('google')->put($newFileName, file_get_contents($request->file('image')));
+                $about_us->image = $newFileName;
             }
 
             if ($request->has('description')) {
