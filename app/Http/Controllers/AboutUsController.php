@@ -78,7 +78,7 @@ class AboutUsController extends Controller
             $about_us->save();
 
             return response()->json([
-                'message' => 'Record updated successfully!',
+                'message' => 'Data updated successfully!',
                 'data' => $about_us
             ], 200);
         } catch (\Exception $e) {
