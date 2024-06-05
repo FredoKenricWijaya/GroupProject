@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use Illuminate\Http\Request;
 use App\Models\ContactUs;
 
@@ -24,27 +26,20 @@ class ContactUsController extends Controller
         return response()->json($contact, 200);
     }
 
-    public function store(Request $request)
+    public function store(StoreContactRequest $request)
     {
-        try{
-            $validatedData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
-            'address' => 'required|string',
-            'message' => 'required|string',
-        ]);
+        try {
+            $validatedData = $request->validated();
 
             $contact = ContactUs::create($validatedData);
             return response()->json($contact, 201);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateContactRequest $request, $id)
     {
         try {
             $contact = ContactUs::find($id);
@@ -53,13 +48,7 @@ class ContactUsController extends Controller
                 return response()->json(['message' => 'Contact not found'], 404);
             }
 
-            $validatedData = $request->validate([
-                'name' => 'sometimes|required|string',
-                'email' => 'sometimes|required|email',
-                'phone' => 'sometimes|required|string',
-                'address' => 'sometimes|required|string',
-                'message' => 'sometimes|required|string',
-            ]);
+            $validatedData = $request->validated();
 
             $contact->update($validatedData);
             return response()->json($contact, 200);
