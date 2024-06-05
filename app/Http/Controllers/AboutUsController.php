@@ -31,16 +31,21 @@ class AboutUsController extends Controller
     public function store(AboutUsRequest $request)
     {
         try {
-            $path = $request->file('image')->store('about_images', 'public');
+            // Get the file from the request
+            $file = $request->file('image');
 
+            // Store the file in the "about_images" folder within the "GroupProject" folder
+            $path = 'about_images/' . $file->getClientOriginalName();
+            Storage::disk('google')->put($path, file_get_contents($file));
+
+            // Create the AboutUs record in the database
             $AboutUs = AboutUs::create([
-                'image' => $path,
+                'image' => $path, // Store the path in the database
                 'description' => $request->description,
             ]);
 
             return response()->json($AboutUs, 201);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -56,13 +61,21 @@ class AboutUsController extends Controller
             }
 
             if ($request->hasFile('image')) {
+                // Get the folder ID of the "GroupProject" folder
+                $folderId = '1t5b95FDAj-r-pqRSEkknmexkpaQIMAYu?hl=id';
+
                 // Delete the old image if it exists
                 if ($about_us->image) {
-                    Storage::disk('public')->delete($about_us->image);
+                    // Delete the old image from the "GroupProject" folder on your driver
+                    Storage::disk('Google')->delete($about_us->image);
                 }
 
-                // Store the new image
-                $path = $request->file('image')->store('about_images', 'public');
+                // Store the new image in the "GroupProject" folder on your driver
+                $path = $request->file('image')->storeAs('about_images', $request->file('image')->getClientOriginalName(), 'Google', [
+                    'visibility' => 'public',
+                    'folderId' => $folderId,
+                ]);
+
                 $about_us->image = $path;
             }
 

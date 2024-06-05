@@ -56,6 +56,12 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'google' => [
+            'driver' => 'google',
+            'clientId' => env('115069570750863248982'),
+            'clientSecret' => env("ef86a92578ca268cf116566ece4dd838f2c0024c"),
+            'folderId' => env('1t5b95FDAj-r-pqRSEkknmexkpaQIMAYu?usp=drive_link'), // (Optional) Specify the folder ID if you want to store files in a specific folder.
+        ],
 
     ],
 
