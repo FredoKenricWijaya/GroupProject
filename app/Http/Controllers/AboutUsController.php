@@ -35,7 +35,7 @@ class AboutUsController extends Controller
             $file = $request->file('image');
 
             // Store the file in the Google Drive disk
-            $path = Storage::disk('google')->putFile('about_images', $file);
+            $path = Storage::disk('google')->put('about_images', $file);
 
             // Create the AboutUs record in the database
             $AboutUs = AboutUs::create([
@@ -60,21 +60,14 @@ class AboutUsController extends Controller
             }
 
             if ($request->hasFile('image')) {
-                // Get the folder ID of the "GroupProject" folder
-                $folderId = '1t5b95FDAj-r-pqRSEkknmexkpaQIMAYu?hl=id';
-
                 // Delete the old image if it exists
                 if ($about_us->image) {
-                    // Delete the old image from the "GroupProject" folder on your driver
                     Storage::disk('google')->delete($about_us->image);
                 }
 
-                // Store the new image in the "GroupProject" folder on your driver
-                $path = $request->file('image')->storeAs('about_images', $request->file('image')->getClientOriginalName(), 'Google', [
-                    'visibility' => 'public',
-                    'folderId' => $folderId,
-                ]);
-
+                // Store the new image
+                $path = 'about_images/' . $request->file('image')->getClientOriginalName();
+                Storage::disk('google')->put($path, file_get_contents($request->file('image')));
                 $about_us->image = $path;
             }
 
@@ -88,8 +81,7 @@ class AboutUsController extends Controller
                 'message' => 'Record updated successfully!',
                 'data' => $about_us
             ], 200);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['error' => 'Error occurred while updating data: ' . $e->getMessage()], 500);
         }
     }
