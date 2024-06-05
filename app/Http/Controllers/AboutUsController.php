@@ -94,11 +94,13 @@ class AboutUsController extends Controller
             return response()->json(['message' => "Data doesn't exist in this id"], 404);
         }
 
-        // Delete the image file
+        // Delete the image file from Google Drive
         if ($AboutUs->image) {
-            Storage::disk('public')->delete($AboutUs->image);
+            // Delete the file from the Google Drive folder
+            Storage::disk('google')->delete($AboutUs->image);
         }
 
+        // Delete the record from the database
         $AboutUs->delete();
 
         return response()->json(['message' => 'Data successfully deleted!'], 200);
