@@ -29,7 +29,12 @@ class TestimonyController extends Controller
     public function store(StoreTestimonyRequest $request)
     {
         try {
-            $path = $request->file('image')->store('testimony_images', 'public');
+            // $path = $request->file('image')->store('testimony_images', 'public');
+                        // Get the file from the request
+            $file = $request->file('image');
+
+                        // Store the file in the Google Drive disk
+            $path = Storage::disk('google')->put('testimony_images', $file);
 
             $testimony = Testimonies::create([
                 'image' => $path,
@@ -59,9 +64,10 @@ class TestimonyController extends Controller
                     Storage::disk('public')->delete($testimony->image);
                 }
 
-                // Store the new image
-                $path = $request->file('image')->store('testimony_images', 'public');
-                $testimony->image = $path;
+                // Store the new image with a unique name
+                $newFileName = 'testimony_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+                Storage::disk('google')->put($newFileName, file_get_contents($request->file('image')));
+                $testimony->image = $newFileName;
             }
 
             if ($request->has('name')) {
@@ -95,7 +101,7 @@ class TestimonyController extends Controller
         try {
             // Delete the image file
             if ($testimonies->image) {
-                Storage::disk('public')->delete($testimonies->image);
+                Storage::disk('google')->delete($testimonies->image);
             }
 
             $testimonies->delete();
