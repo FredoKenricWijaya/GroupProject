@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+
     Route::get('/user', function(){
         try{
             return response()->json([
