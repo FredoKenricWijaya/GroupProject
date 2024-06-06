@@ -3,87 +3,87 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreServiceRequest;
-use App\Http\Requests\UpdateServiceRequest;
-use App\Models\OurService;
+use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
+use App\Models\OurTeam;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
-class OurServiceController extends Controller
+class OurTeamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $allData = OurService::all();
+        $allData = OurTeam::all();
         return response()->json($allData, 200);
     }
 
     public function show($id)
     {
-        $OurService = OurService::find($id);
+        $OurTeam = OurTeam::find($id);
 
-        if (is_null($OurService)) {
+        if (is_null($OurTeam)) {
             return response()->json(['message' => 'Record not found'], 404);
         }
 
-        return response()->json($OurService, 200);
+        return response()->json($OurTeam, 200);
     }
 
-    public function store(StoreServiceRequest $request)
+    public function store(StoreTeamRequest $request)
     {
         try {
             // Get the file from the request
             $file = $request->file('image');
 
             // Store the file in the Google Drive disk
-            $path = Storage::disk('google')->put('Service_images', $file);
+            $path = Storage::disk('google')->put('Team_images', $file);
 
-            // Create the OurService record in the database
-            $OurService = OurService::create([
+            // Create the OurTeam record in the database
+            $OurTeam = OurTeam::create([
                 'image' => $path, // Store the path in the database
-                'title' => $request->title,
+                'name' => $request->name,
                 'description' => $request->description,
             ]);
 
-            return response()->json($OurService, 201);
+            return response()->json($OurTeam, 201);
         } catch (\Exception $e) {
             // Return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function update(UpdateServiceRequest $request, $id)
+    public function update(UpdateTeamRequest $request, $id)
     {
         try {
-            $Service = OurService::find($id);
+            $team = OurTeam::find($id);
 
-            if (is_null($Service)) {
+            if (is_null($team)) {
                 return response()->json(['error' => 'Data not found'], 404);
             }
 
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
-                if ($Service->image) {
-                    Storage::disk('google')->delete($Service->image);
+                if ($team->image) {
+                    Storage::disk('google')->delete($team->image);
                 }
 
                 // Store the new image with a unique name
-                $newFileName = 'Service_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+                $newFileName = 'Team_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
                 Storage::disk('google')->put($newFileName, file_get_contents($request->file('image')));
-                $Service->image = $newFileName;
+                $team->image = $newFileName;
             }
 
             if ($request->has('description')) {
-                $Service->description = $request->description;
+                $team->description = $request->description;
             }
 
-            $Service->save();
+            $team->save();
 
             return response()->json([
                 'message' => 'Data updated successfully!',
-                'data' => $Service
+                'data' => $team
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error occurred while updating data: ' . $e->getMessage()], 500);
@@ -92,20 +92,20 @@ class OurServiceController extends Controller
 
     public function destroy($id)
     {
-        $OurService = OurService::find($id);
+        $OurTeam = OurTeam::find($id);
 
-        if (is_null($OurService)) {
+        if (is_null($OurTeam)) {
             return response()->json(['message' => "Data doesn't exist in this id"], 404);
         }
 
         // Delete the image file from Google Drive
-        if ($OurService->image) {
+        if ($OurTeam->image) {
             // Delete the file from the Google Drive folder
-            Storage::disk('google')->delete($OurService->image);
+            Storage::disk('google')->delete($OurTeam->image);
         }
 
         // Delete the record from the database
-        $OurService->delete();
+        $OurTeam->delete();
 
         return response()->json(['message' => 'Data successfully deleted!'], 200);
     }
