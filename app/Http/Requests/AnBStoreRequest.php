@@ -15,11 +15,9 @@ class AnBStoreRequest extends FormRequest
 
     public function rules()
     {
-        $rules = [
+        return[
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:102400',
         ];
-
-        return $rules;
     }
 }

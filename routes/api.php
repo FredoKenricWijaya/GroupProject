@@ -38,7 +38,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/about_us', [AboutUsController::class, 'index']);
     Route::get('/about_us/{id}', [AboutUsController::class, 'show']);
     Route::post('/about_us/add', [AboutUsController::class, 'store']);
-    Route::post('/about_us/edit/{id}', [AboutUsController::class, 'update']);
+    Route::post('/about_us/update/{id}', [AboutUsController::class, 'update']);
     Route::delete('/about_us/delete/{id}', [AboutUsController::class, 'destroy']);
 
     Route::get('/contact_us', [ContactUsController::class, 'index']);
