@@ -79,6 +79,10 @@ class OurTeamController extends Controller
                 $team->description = $request->description;
             }
 
+            if ($request->has('name')) {
+                $team->name = $request->name;
+            }
+
             $team->save();
 
             return response()->json([

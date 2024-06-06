@@ -79,6 +79,10 @@ class OurServiceController extends Controller
                 $Service->description = $request->description;
             }
 
+            if ($request->has('title')) {
+                $Service->title = $request->title;
+            }
+
             $Service->save();
 
             return response()->json([
