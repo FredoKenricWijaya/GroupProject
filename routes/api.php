@@ -9,6 +9,7 @@ use App\Http\Controllers\OurServiceController;
 use App\Http\Controllers\OurTeamController;
 use App\Http\Controllers\TestimonyController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -17,6 +18,22 @@ use Illuminate\Http\Request;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function(){
+        try{
+            return response()->json([
+                'status' => true,
+                'message' => 'Username taken!',
+                'username' => Auth::user()->name,
+            ]);
+        } catch (\throwable $th){
+            return response()->json([
+                'status' => false,
+                'message' => 'Username taken!',
+                'username' => $th->getMessage(),
+            ]);
+        }
+    });
+
     Route::get('/about_us', [AboutUsController::class, 'index']);
     Route::get('/about_us/{id}', [AboutUsController::class, 'show']);
     Route::post('/about_us', [AboutUsController::class, 'store']);
