@@ -23,7 +23,7 @@ class UpdateTeamRequest extends FormRequest
     {
         return [
             'description' => 'sometimes|required|string',
-            'team' => 'sometimes|required|string',
+            'name' => 'sometimes|required|string',
             'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:102400',
         ];
     }

@@ -23,7 +23,7 @@ class StoreTeamRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'team' => 'required|string',
+            'name' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:102400',
         ];
     }
