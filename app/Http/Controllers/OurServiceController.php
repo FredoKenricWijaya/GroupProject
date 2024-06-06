@@ -2,85 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AnBUpdateRequest;
-use App\Http\Requests\AnBStoreRequest;
-use App\Models\AboutUs;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
+use App\Models\OurService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AboutUsController extends Controller
+class OurServiceController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $allData = AboutUs::all();
+        $allData = OurService::all();
         return response()->json($allData, 200);
     }
 
     public function show($id)
     {
-        $AboutUs = AboutUs::find($id);
+        $OurService = OurService::find($id);
 
-        if (is_null($AboutUs)) {
+        if (is_null($OurService)) {
             return response()->json(['message' => 'Record not found'], 404);
         }
 
-        return response()->json($AboutUs, 200);
+        return response()->json($OurService, 200);
     }
 
-    public function store(AnBStoreRequest $request)
+    public function store(StoreServiceRequest $request)
     {
         try {
             // Get the file from the request
             $file = $request->file('image');
 
             // Store the file in the Google Drive disk
-            $path = Storage::disk('google')->put('about_images', $file);
+            $path = Storage::disk('google')->put('Service_images', $file);
 
-            // Create the AboutUs record in the database
-            $AboutUs = AboutUs::create([
+            // Create the OurService record in the database
+            $OurService = OurService::create([
                 'image' => $path, // Store the path in the database
+                'title' => $request->title,
                 'description' => $request->description,
             ]);
 
-            return response()->json($AboutUs, 201);
+            return response()->json($OurService, 201);
         } catch (\Exception $e) {
             // Return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function update(AnBUpdateRequest $request, $id)
+    public function update(UpdateServiceRequest $request, $id)
     {
         try {
-            $about_us = AboutUs::find($id);
+            $Service_us = OurService::find($id);
 
-            if (is_null($about_us)) {
+            if (is_null($Service_us)) {
                 return response()->json(['error' => 'Data not found'], 404);
             }
 
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
-                if ($about_us->image) {
-                    Storage::disk('google')->delete($about_us->image);
+                if ($Service_us->image) {
+                    Storage::disk('google')->delete($Service_us->image);
                 }
 
                 // Store the new image with a unique name
-                $newFileName = 'about_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+                $newFileName = 'Service_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
                 Storage::disk('google')->put($newFileName, file_get_contents($request->file('image')));
-                $about_us->image = $newFileName;
+                $Service_us->image = $newFileName;
             }
 
             if ($request->has('description')) {
-                $about_us->description = $request->description;
+                $Service_us->description = $request->description;
             }
 
-            $about_us->save();
+            $Service_us->save();
 
             return response()->json([
                 'message' => 'Data updated successfully!',
-                'data' => $about_us
+                'data' => $Service_us
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error occurred while updating data: ' . $e->getMessage()], 500);
@@ -89,24 +92,21 @@ class AboutUsController extends Controller
 
     public function destroy($id)
     {
-        $AboutUs = AboutUs::find($id);
+        $OurService = OurService::find($id);
 
-        if (is_null($AboutUs)) {
+        if (is_null($OurService)) {
             return response()->json(['message' => "Data doesn't exist in this id"], 404);
         }
 
         // Delete the image file from Google Drive
-        if ($AboutUs->image) {
+        if ($OurService->image) {
             // Delete the file from the Google Drive folder
-            Storage::disk('google')->delete($AboutUs->image);
+            Storage::disk('google')->delete($OurService->image);
         }
 
         // Delete the record from the database
-        $AboutUs->delete();
+        $OurService->delete();
 
         return response()->json(['message' => 'Data successfully deleted!'], 200);
     }
 }
-
-
-

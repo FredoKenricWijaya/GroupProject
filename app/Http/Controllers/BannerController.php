@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AnBUpdateRequest;
 use App\Http\Requests\AnBStoreRequest;
+use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Support\Facades\Storage;
 
