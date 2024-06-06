@@ -4,28 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AnBUpdateRequest;
 use App\Http\Requests\AnBStoreRequest;
-use App\Models\AboutUs;
+use App\Models\Banner;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AboutUsController extends Controller
+class BannerController extends Controller
 {
     public function index()
     {
-        $allData = AboutUs::all();
+        $allData = Banner::all();
         return response()->json($allData, 200);
     }
 
     public function show($id)
     {
-        $AboutUs = AboutUs::find($id);
+        $Banner = Banner::find($id);
 
-        if (is_null($AboutUs)) {
+        if (is_null($Banner)) {
             return response()->json(['message' => 'Record not found'], 404);
         }
 
-        return response()->json($AboutUs, 200);
+        return response()->json($Banner, 200);
     }
 
     public function store(AnBStoreRequest $request)
@@ -35,15 +33,15 @@ class AboutUsController extends Controller
             $file = $request->file('image');
 
             // Store the file in the Google Drive disk
-            $path = Storage::disk('google')->put('about_images', $file);
+            $path = Storage::disk('google')->put('banner_images', $file);
 
-            // Create the AboutUs record in the database
-            $AboutUs = AboutUs::create([
+            // Create the Banner record in the database
+            $Banner = Banner::create([
                 'image' => $path, // Store the path in the database
                 'description' => $request->description,
             ]);
 
-            return response()->json($AboutUs, 201);
+            return response()->json($Banner, 201);
         } catch (\Exception $e) {
             // Return error response
             return response()->json(['error' => $e->getMessage()], 500);
@@ -53,7 +51,7 @@ class AboutUsController extends Controller
     public function update(AnBUpdateRequest $request, $id)
     {
         try {
-            $about_us = AboutUs::find($id);
+            $about_us = Banner::find($id);
 
             if (is_null($about_us)) {
                 return response()->json(['error' => 'Data not found'], 404);
@@ -66,7 +64,7 @@ class AboutUsController extends Controller
                 }
 
                 // Store the new image with a unique name
-                $newFileName = 'about_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+                $newFileName = 'banner_images/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
                 Storage::disk('google')->put($newFileName, file_get_contents($request->file('image')));
                 $about_us->image = $newFileName;
             }
@@ -88,24 +86,21 @@ class AboutUsController extends Controller
 
     public function destroy($id)
     {
-        $AboutUs = AboutUs::find($id);
+        $Banner = Banner::find($id);
 
-        if (is_null($AboutUs)) {
+        if (is_null($Banner)) {
             return response()->json(['message' => "Data doesn't exist in this id"], 404);
         }
 
         // Delete the image file from Google Drive
-        if ($AboutUs->image) {
+        if ($Banner->image) {
             // Delete the file from the Google Drive folder
-            Storage::disk('google')->delete($AboutUs->image);
+            Storage::disk('google')->delete($Banner->image);
         }
 
         // Delete the record from the database
-        $AboutUs->delete();
+        $Banner->delete();
 
         return response()->json(['message' => 'Data successfully deleted!'], 200);
     }
 }
-
-
-
