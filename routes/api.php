@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\TestimonyController;
 use Illuminate\Http\Request;
 
@@ -33,4 +34,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/testimonies', [TestimonyController::class, 'store']);
     Route::post('/testimonies/{id}', [TestimonyController::class, 'update']);
     Route::delete('/testimonies/{id}', [TestimonyController::class, 'destroy']);
+
+    Route::get('/banner', [BannerController::class, 'index']);
+    Route::get('/banner/{id}', [BannerController::class, 'show']);
+    Route::post('/banner', [BannerController::class, 'store']);
+    Route::post('/banner/{id}', [BannerController::class, 'update']);
+    Route::delete('/banner/{id}', [BannerController::class, 'destroy']);
 });
