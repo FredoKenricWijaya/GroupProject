@@ -21,7 +21,7 @@ class BannerController extends Controller
         $Banner = Banner::find($id);
 
         if (is_null($Banner)) {
-            return response()->json(['message' => 'Record not found'], 404);
+            return response()->json(['message' => 'Data not found'], 404);
         }
 
         return response()->json($Banner, 200);
