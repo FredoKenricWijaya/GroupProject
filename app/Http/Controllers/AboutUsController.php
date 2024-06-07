@@ -23,7 +23,7 @@ class AboutUsController extends Controller
         $AboutUs = AboutUs::find($id);
 
         if (is_null($AboutUs)) {
-            return response()->json(['message' => 'Record not found'], 404);
+            return response()->json(['message' => 'Data not found'], 404);
         }
 
         return response()->json($AboutUs, 200);

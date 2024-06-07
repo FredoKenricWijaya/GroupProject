@@ -73,4 +73,3 @@ class ContactUsController extends Controller
         return response()->json(['message' => 'Contact deleted successfully'], 200);
     }
 }
-
