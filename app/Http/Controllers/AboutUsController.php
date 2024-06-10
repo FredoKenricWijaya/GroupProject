@@ -15,18 +15,24 @@ class AboutUsController extends Controller
     public function index()
     {
         $allData = AboutUs::all();
-        return response()->json($allData, 200);
-    }
+        $data = [];
 
-    public function show($id)
-    {
-        $AboutUs = AboutUs::find($id);
-
-        if (is_null($AboutUs)) {
-            return response()->json(['message' => 'Data not found'], 404);
+        if ($allData->isNotEmpty()) {
+            foreach ($allData as $item) {
+                $imageUrl = Storage::disk('google')->url($item->image);
+                $data[] = [
+                    'id' => $item->id,
+                    'image' => $imageUrl,
+                    'description' => $item->description,
+                ];
+            }
+            return response()->json($data, 200);
+        } else {
+            return response()->json([
+                'message' => 'No data found',
+                'data' => $data
+            ], 200);
         }
-
-        return response()->json($AboutUs, 200);
     }
 
     public function store(AnBStoreRequest $request)

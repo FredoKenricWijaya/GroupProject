@@ -13,7 +13,19 @@ class BannerController extends Controller
     public function index()
     {
         $allData = Banner::all();
-        return response()->json($allData, 200);
+        $data = [];
+        if ($allData->isNotEmpty()){
+            foreach($allData as $item){
+                $imageUrl = Storage::disk('google')->url($item->image);
+                $data[] = [
+                    'id' => $item->id,
+                    'image' => $imageUrl,
+                    'description' => $item->description,
+                ];
+            }
+            return response()->json($data, 200);
+        }
+
     }
 
     public function show($id)
