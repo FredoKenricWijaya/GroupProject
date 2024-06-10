@@ -17,7 +17,25 @@ class OurTeamController extends Controller
     public function index()
     {
         $allData = OurTeam::all();
-        return response()->json($allData, 200);
+        $data = [];
+
+        if ($allData->isNotEmpty()) {
+            foreach ($allData as $item) {
+                $imageUrl = Storage::disk('google')->url($item->image);
+                $data[] = [
+                    'id' => $item->id,
+                    'image' => $imageUrl,
+                    'name' => $item->name,
+                    'description' => $item->description,
+                ];
+            }
+            return response()->json($data, 200);
+        } else {
+            return response()->json([
+                'message' => 'No data found',
+                'data' => $data
+            ], 200);
+        }
     }
 
     public function show($id)
