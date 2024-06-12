@@ -134,7 +134,6 @@ class ContactUsController extends Controller
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
  *             @OA\Schema(
-     *            required={"name", "email", "phone", "address", "message"},
      *            @OA\Property(
      *                property="name",
      *                type="string",
