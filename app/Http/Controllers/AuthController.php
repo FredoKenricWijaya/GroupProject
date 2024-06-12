@@ -83,6 +83,45 @@ class AuthController extends Controller
             'token' => $token
         ];
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="Get the name of the authenticated user",
+     *     tags={"User"},
+     *     security={{ "passport": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="John Doe")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
+    public function getUser()
+    {
+        try {
+            return response()->json([
+                'status' => true,
+                'message' => 'Username get!',
+                'username' => Auth::user()->name,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => "Username doesn't exist",
+                'username' => $th->getMessage(),
+            ]);
+        }
+    }
 }
 
 

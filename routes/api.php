@@ -19,21 +19,22 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('/user', function(){
-        try{
-            return response()->json([
-                'status' => true,
-                'message' => 'Username get!',
-                'username' => Auth::user()->name,
-            ]);
-        } catch (\throwable $th){
-            return response()->json([
-                'status' => false,
-                'message' => "Username doesn't exist",
-                'username' => $th->getMessage(),
-            ]);
-        }
-    });
+    Route::get('/user', [AuthController::class, 'getUser']);
+    // Route::get('/user', function(){
+    //     try{
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Username get!',
+    //             'username' => Auth::user()->name,
+    //         ]);
+    //     } catch (\throwable $th){
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => "Username doesn't exist",
+    //             'username' => $th->getMessage(),
+    //         ]);
+    //     }
+    // });
 
     Route::get('/about_us', [AboutUsController::class, 'index']);
     Route::get('/about_us/{id}', [AboutUsController::class, 'show']);
