@@ -328,13 +328,13 @@
                 }
             }
         },
-        "/api/user": {
+        "/user": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Get the name of the authenticated user",
-                "operationId": "31234491f21a35d2de09d4fae7ee13c4",
+                "operationId": "f0e258a1c69765024f344f6dea1d4a0a",
                 "responses": {
                     "200": {
                         "description": "Successful operation",

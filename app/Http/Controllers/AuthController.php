@@ -86,7 +86,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/user",
+     *     path="/user",
      *     summary="Get the name of the authenticated user",
      *     tags={"User"},
      *     security={{ "passport": {} }},
