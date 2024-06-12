@@ -224,14 +224,14 @@
         "/login": {
             "post": {
                 "tags": [
-                    "Authentication"
+                    "Login"
                 ],
                 "summary": "Authenticate user",
                 "operationId": "2dd578ff7aba2721293dac66833b27d1",
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "email",
@@ -240,13 +240,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "format": "email",
-                                        "example": "user@example.com"
+                                        "format": "email"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
+                                        "format": "password"
                                     }
                                 },
                                 "type": "object"

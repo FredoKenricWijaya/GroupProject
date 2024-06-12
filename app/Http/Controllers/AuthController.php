@@ -10,18 +10,23 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    /**
+/**
  * @OA\Post(
  *     path="/login",
  *     summary="Authenticate user",
- *     tags={"Authentication"},
+ *     tags={"Login"},
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(
- *             required={"email", "password"},
- *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
- *             @OA\Property(property="password", type="string", format="password", example="password123")
- *         )
+ *         content={
+ *             @OA\MediaType(
+ *                 mediaType="multipart/form-data",
+ *                 @OA\Schema(
+ *                     required={"email", "password"},
+ *                     @OA\Property(property="email", type="string", format="email"),
+ *                     @OA\Property(property="password", type="string", format="password")
+ *                 )
+ *             )
+ *         }
  *     ),
  *     @OA\Response(
  *         response=200,
