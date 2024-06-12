@@ -1119,6 +1119,285 @@
                     }
                 }
             }
+        },
+        "/ourteam": {
+            "get": {
+                "tags": [
+                    "Our Team"
+                ],
+                "summary": "Get list of all team members",
+                "operationId": "b2f54132e0b050a6ae8b3574af7febda",
+                "responses": {
+                    "200": {
+                        "description": "List of team members",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data found"
+                    }
+                }
+            }
+        },
+        "/ourteam/add": {
+            "post": {
+                "tags": [
+                    "Our Team"
+                ],
+                "summary": "Create a new team member",
+                "operationId": "6efe79722ee1f7c1fb22568afb27bf16",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Team member created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "image": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred"
+                    }
+                }
+            }
+        },
+        "/ourteam/add/{id}": {
+            "post": {
+                "tags": [
+                    "Our Team"
+                ],
+                "summary": "Update an existing team member",
+                "operationId": "fb5f1d837260f099a424b71c0be9c4bb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Team member updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data updated successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Error occurred"
+                    }
+                }
+            }
+        },
+        "/ourteam/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Our Team"
+                ],
+                "summary": "Delete a team member",
+                "operationId": "5292689a0473b01096019de23c5e01bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Team member deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data successfully deleted!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data doesn't exist in this id"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/social_media": {
+            "get": {
+                "tags": [
+                    "Social Media"
+                ],
+                "summary": "Get list of all social media links",
+                "operationId": "aef83da79c0ac70c201241a94d67db2a",
+                "responses": {
+                    "200": {
+                        "description": "List of social media links",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "format": "url"
+                                            },
+                                            "image": {
+                                                "type": "string",
+                                                "format": "url"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data found"
+                    }
+                }
+            }
         }
     }
 }
