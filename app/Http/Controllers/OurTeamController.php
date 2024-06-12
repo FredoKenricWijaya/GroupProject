@@ -12,7 +12,25 @@ use Illuminate\Http\Request;
 class OurTeamController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/ourteam",
+     *     summary="Get list of all team members",
+     *     tags={"Our Team"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of team members",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="image", type="string", format="url"),
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="description", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No data found"
+     *     )
+     * )
      */
     public function index()
     {
@@ -38,6 +56,39 @@ class OurTeamController extends Controller
         }
     }
 
+        /**
+     * @OA\Post(
+     *     path="/ourteam/add",
+     *     summary="Create a new team member",
+     *     tags={"Our Team"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"name", "description", "image"},
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Team member created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="description", type="string"),
+     *             @OA\Property(property="image", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function store(StoreTeamRequest $request)
     {
         try {
@@ -61,6 +112,51 @@ class OurTeamController extends Controller
         }
     }
 
+        /**
+     * @OA\Post(
+     *     path="/ourteam/add/{id}",
+     *     summary="Update an existing team member",
+     *     tags={"Our Team"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Team member updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data updated successfully!"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function update(UpdateTeamRequest $request, $id)
     {
         try {
@@ -100,7 +196,33 @@ class OurTeamController extends Controller
             return response()->json(['error' => 'Error occurred while updating data: ' . $e->getMessage()], 500);
         }
     }
-
+    /**
+     * @OA\Delete(
+     *     path="/ourteam/delete/{id}",
+     *     summary="Delete a team member",
+     *     tags={"Our Team"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Team member deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data successfully deleted!")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data doesn't exist in this id")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $OurTeam = OurTeam::find($id);
