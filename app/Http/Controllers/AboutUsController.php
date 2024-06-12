@@ -10,8 +10,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+
 class AboutUsController extends Controller
 {
+        /**
+     * @OA\Get(
+     *     path="/about_us",
+     *     summary="Get all About Us records",
+     *     tags={"About Us"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="image", type="string"),
+     *                 @OA\Property(property="description", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No data found"
+     *     )
+     * )
+     */
     public function index()
     {
         $allData = AboutUs::all();
@@ -35,6 +59,44 @@ class AboutUsController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/about_us/add",
+     *     summary="Create a new About Us record",
+     *     tags={"About Us"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"description", "image"},
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="string",
+     *                     format="binary"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Record created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="image", type="string"),
+     *             @OA\Property(property="description", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function store(AnBStoreRequest $request)
     {
         try {
@@ -56,7 +118,56 @@ class AboutUsController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
+/**
+ * @OA\Post(
+ *     path="/about_us/update/{id}",
+ *     summary="Update an About Us record",
+ *     tags={"About Us"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=false,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 @OA\Property(
+ *                     property="description",
+ *                     type="string"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="image",
+ *                     type="string",
+ *                     format="binary"
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Data updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string"),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="image", type="string"),
+ *                 @OA\Property(property="description", type="string")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Data not found"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error occurred"
+ *     )
+ * )
+ */
     public function update(AnBUpdateRequest $request, $id)
     {
         try {
@@ -93,6 +204,30 @@ class AboutUsController extends Controller
         }
     }
 
+     /**
+     * @OA\Delete(
+     *     path="/about_us/delete/{id}",
+     *     summary="Delete an About Us record",
+     *     tags={"About Us"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data successfully deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data doesn't exist"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $AboutUs = AboutUs::find($id);
