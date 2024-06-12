@@ -215,7 +215,7 @@ class ContactUsController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/contact_us/{id}",
+     *     path="/contact_us/delete/{id}",
      *     summary="Delete a contact",
      *     tags={"Contact Us"},
      *     @OA\Parameter(

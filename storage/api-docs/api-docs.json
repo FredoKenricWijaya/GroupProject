@@ -746,13 +746,6 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "phone",
-                                    "address",
-                                    "message"
-                                ],
                                 "properties": {
                                     "name": {
                                         "description": "Contact name",
@@ -835,13 +828,13 @@
                 }
             }
         },
-        "/contact_us/{id}": {
+        "/contact_us/delete/{id}": {
             "delete": {
                 "tags": [
                     "Contact Us"
                 ],
                 "summary": "Delete a contact",
-                "operationId": "68a9771db347254fc64cb2ee754231cd",
+                "operationId": "d63eea2110f2abd9e74cd46aeeb3b561",
                 "parameters": [
                     {
                         "name": "id",
@@ -878,6 +871,245 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Contact not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ourservice": {
+            "get": {
+                "tags": [
+                    "Our Service"
+                ],
+                "summary": "Get list of all services",
+                "operationId": "b3a69ba0354dd66e8b21fdf462c0943a",
+                "responses": {
+                    "200": {
+                        "description": "List of services",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "format": "url"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data found"
+                    }
+                }
+            }
+        },
+        "/ourservice/add": {
+            "post": {
+                "tags": [
+                    "Our Service"
+                ],
+                "summary": "Create a new service",
+                "operationId": "60fea0ac5d8bd771a62069552ce72ebb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Service created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "image": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred"
+                    }
+                }
+            }
+        },
+        "/ourservice/update/{id}": {
+            "post": {
+                "tags": [
+                    "Our Service"
+                ],
+                "summary": "Update an existing service",
+                "operationId": "c5d53684479a8c5f700c47deb7fe2d73",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Service updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data updated successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "image": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found"
+                    },
+                    "500": {
+                        "description": "Error occurred"
+                    }
+                }
+            }
+        },
+        "/ourservice/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Our Service"
+                ],
+                "summary": "Delete a service",
+                "operationId": "89946e4acfa76bbc5fc675f5346e6e18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data successfully deleted!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data doesn't exist in this id"
                                         }
                                     },
                                     "type": "object"

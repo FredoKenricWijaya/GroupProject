@@ -12,7 +12,25 @@ use Illuminate\Http\Request;
 class OurServiceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/ourservice",
+     *     summary="Get list of all services",
+     *     tags={"Our Service"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of services",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="image", type="string", format="url"),
+     *             @OA\Property(property="title", type="string"),
+     *             @OA\Property(property="description", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No data found"
+     *     )
+     * )
      */
     public function index()
     {
@@ -38,6 +56,39 @@ class OurServiceController extends Controller
         }
     }
 
+        /**
+     * @OA\Post(
+     *     path="/ourservice/add",
+     *     summary="Create a new service",
+     *     tags={"Our Service"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"title", "description", "image"},
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Service created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="title", type="string"),
+     *             @OA\Property(property="description", type="string"),
+     *             @OA\Property(property="image", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function store(StoreServiceRequest $request)
     {
         try {
@@ -61,6 +112,51 @@ class OurServiceController extends Controller
         }
     }
 
+        /**
+     * @OA\Post(
+     *     path="/ourservice/update/{id}",
+     *     summary="Update an existing service",
+     *     tags={"Our Service"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Service updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data updated successfully!"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="image", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function update(UpdateServiceRequest $request, $id)
     {
         try {
@@ -101,6 +197,33 @@ class OurServiceController extends Controller
         }
     }
 
+        /**
+     * @OA\Delete(
+     *     path="/ourservice/delete/{id}",
+     *     summary="Delete a service",
+     *     tags={"Our Service"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Service deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data successfully deleted!")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data doesn't exist in this id")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $OurService = OurService::find($id);
