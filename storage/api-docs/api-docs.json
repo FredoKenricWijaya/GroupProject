@@ -2,6 +2,9 @@
     "openapi": "3.0.0",
     "info": {
         "title": "PHP Admin Dashboard",
+        "contact": {
+            "email": "Fredowijaya36@gmail.com"
+        },
         "version": "1.0"
     },
     "servers": [
