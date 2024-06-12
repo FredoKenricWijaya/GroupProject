@@ -115,7 +115,7 @@ class BannerController extends Controller
     /**
  * @OA\Post(
  *     path="/banner/update/{id}",
- *     summary="Update an Banner record",
+ *     summary="Update a Banner record",
  *     tags={"Banner"},
  *     @OA\Parameter(
  *         name="id",
@@ -201,7 +201,7 @@ class BannerController extends Controller
          /**
      * @OA\Delete(
      *     path="/banner/delete/{id}",
-     *     summary="Delete an Banner record",
+     *     summary="Delete a Banner record",
      *     tags={"Banner"},
      *     @OA\Parameter(
      *         name="id",
