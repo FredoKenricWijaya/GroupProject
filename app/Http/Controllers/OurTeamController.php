@@ -38,17 +38,6 @@ class OurTeamController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $OurTeam = OurTeam::find($id);
-
-        if (is_null($OurTeam)) {
-            return response()->json(['message' => 'Record not found'], 404);
-        }
-
-        return response()->json($OurTeam, 200);
-    }
-
     public function store(StoreTeamRequest $request)
     {
         try {

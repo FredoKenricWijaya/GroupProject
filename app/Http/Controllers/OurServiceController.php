@@ -38,17 +38,6 @@ class OurServiceController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $OurService = OurService::find($id);
-
-        if (is_null($OurService)) {
-            return response()->json(['message' => 'Record not found'], 404);
-        }
-
-        return response()->json($OurService, 200);
-    }
-
     public function store(StoreServiceRequest $request)
     {
         try {

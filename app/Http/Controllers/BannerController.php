@@ -10,6 +10,29 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
+            /**
+     * @OA\Get(
+     *     path="/banner",
+     *     summary="Get all Banner records",
+     *     tags={"Banner"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="image", type="string"),
+     *                 @OA\Property(property="description", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No data found"
+     *     )
+     * )
+     */
     public function index()
     {
         $allData = Banner::all();
@@ -28,17 +51,45 @@ class BannerController extends Controller
 
     }
 
-    public function show($id)
-    {
-        $Banner = Banner::find($id);
 
-        if (is_null($Banner)) {
-            return response()->json(['message' => 'Data not found'], 404);
-        }
-
-        return response()->json($Banner, 200);
-    }
-
+        /**
+     * @OA\Post(
+     *     path="/banner/add",
+     *     summary="Create a new Banner record",
+     *     tags={"Banner"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"description", "image"},
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="string",
+     *                     format="binary"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Record created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer"),
+     *             @OA\Property(property="image", type="string"),
+     *             @OA\Property(property="description", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred"
+     *     )
+     * )
+     */
     public function store(AnBStoreRequest $request)
     {
         try {
@@ -61,6 +112,56 @@ class BannerController extends Controller
         }
     }
 
+    /**
+ * @OA\Post(
+ *     path="/banner/update/{id}",
+ *     summary="Update an Banner record",
+ *     tags={"Banner"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=false,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 @OA\Property(
+ *                     property="description",
+ *                     type="string"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="image",
+ *                     type="string",
+ *                     format="binary"
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Data updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string"),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="image", type="string"),
+ *                 @OA\Property(property="description", type="string")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Data not found"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error occurred"
+ *     )
+ * )
+ */
     public function update(AnBUpdateRequest $request, $id)
     {
         try {
@@ -97,6 +198,30 @@ class BannerController extends Controller
         }
     }
 
+         /**
+     * @OA\Delete(
+     *     path="/banner/delete/{id}",
+     *     summary="Delete an Banner record",
+     *     tags={"Banner"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data successfully deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data doesn't exist"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $Banner = Banner::find($id);

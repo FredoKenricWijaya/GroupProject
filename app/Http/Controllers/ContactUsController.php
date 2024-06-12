@@ -16,17 +16,6 @@ class ContactUsController extends Controller
         return response()->json($contacts, 200);
     }
 
-    public function show($id)
-    {
-        $contact = ContactUs::find($id);
-
-        if (!$contact) {
-            return response()->json(['message' => 'Contact not found'], 404);
-        }
-
-        return response()->json($contact, 200);
-    }
-
     public function store(StoreContactRequest $request)
     {
         try {

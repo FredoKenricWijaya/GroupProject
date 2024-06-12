@@ -34,17 +34,6 @@ class TestimonyController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $testimonies = Testimonies::find($id);
-
-        if (is_null($testimonies)) {
-            return response()->json(['message' => 'Data not found'], 404);
-        }
-
-        return response()->json($testimonies, 200);
-    }
-
     public function store(StoreTestimonyRequest $request)
     {
         try {
