@@ -47,6 +47,7 @@ class TestimonyController extends Controller
             foreach ($allData as $item) {
                 $imageUrl = Storage::disk('google')->url($item->image);
                 $data[] = [
+                    'id' => $item->id,
                     'image' => $imageUrl,
                     'name' => $item->name,
                     'business_name' => $item->business_name,
