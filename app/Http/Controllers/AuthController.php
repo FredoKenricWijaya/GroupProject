@@ -89,7 +89,6 @@ class AuthController extends Controller
      *     path="/user",
      *     summary="Get the name of the authenticated user",
      *     tags={"User"},
-     *     security={{ "passport": {} }},
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
