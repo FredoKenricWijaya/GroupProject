@@ -1398,6 +1398,344 @@
                     }
                 }
             }
+        },
+        "/testimonies": {
+            "get": {
+                "tags": [
+                    "Testimonies"
+                ],
+                "summary": "Get list of testimonies",
+                "operationId": "dde6bcda67b7415283c0de35f9e6ea5e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "image": {
+                                                "type": "string",
+                                                "example": "https://drive.google.com/uc?id=example"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "John Doe"
+                                            },
+                                            "business_name": {
+                                                "type": "string",
+                                                "example": "John's Business"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "This is a testimony description"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No data found"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testimonies/add": {
+            "post": {
+                "tags": [
+                    "Testimonies"
+                ],
+                "summary": "Create a new testimony",
+                "operationId": "e61a157695f106f610a1a1d82ce158a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "image",
+                                    "name",
+                                    "business_name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "business_name": {
+                                        "type": "string",
+                                        "example": "John's Business"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "This is a testimony description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Testimony created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "image": {
+                                            "type": "string",
+                                            "example": "testimony_images/example.jpg"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "business_name": {
+                                            "type": "string",
+                                            "example": "John's Business"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "This is a testimony description"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error occurred while storing data: error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testimonies/update/{id}": {
+            "post": {
+                "tags": [
+                    "Testimonies"
+                ],
+                "summary": "Update a testimony",
+                "operationId": "762c9fce2585b81e46cca45f54dfd28e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "business_name": {
+                                        "type": "string",
+                                        "example": "John's Business"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "This is a testimony description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data updated successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "testimony_images/example.jpg"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "business_name": {
+                                                    "type": "string",
+                                                    "example": "John's Business"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "This is a testimony description"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error occurred while updating data: error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testimonies/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Testimonies"
+                ],
+                "summary": "Delete a testimony",
+                "operationId": "82934ea3eac45c28755d8d2d7d8f73bb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data successfully deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data successfully deleted!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error occurred while deleting data: error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

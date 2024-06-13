@@ -10,6 +10,34 @@ use Illuminate\Support\Facades\Storage;
 
 class TestimonyController extends Controller
 {
+        /**
+     * @OA\Get(
+     *     path="/testimonies",
+     *     summary="Get list of testimonies",
+     *     tags={"Testimonies"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="image", type="string", example="https://drive.google.com/uc?id=example"),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="business_name", type="string", example="John's Business"),
+     *                 @OA\Property(property="description", type="string", example="This is a testimony description")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No data found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No data found"),
+     *             @OA\Property(property="data", type="array", @OA\Items())
+     *         )
+     *     )
+     * )
+     */
     public function index()
     {
         $allData = Testimonies::all();
@@ -33,7 +61,43 @@ class TestimonyController extends Controller
             ], 200);
         }
     }
-
+    /**
+     * @OA\Post(
+     *     path="/testimonies/add",
+     *     summary="Create a new testimony",
+     *     tags={"Testimonies"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"image", "name", "business_name", "description"},
+     *                 @OA\Property(property="image", type="string", format="binary"),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="business_name", type="string", example="John's Business"),
+     *                 @OA\Property(property="description", type="string", example="This is a testimony description")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Testimony created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="image", type="string", example="testimony_images/example.jpg"),
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="business_name", type="string", example="John's Business"),
+     *             @OA\Property(property="description", type="string", example="This is a testimony description")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Error occurred while storing data: error message")
+     *         )
+     *     )
+     * )
+     */
     public function store(StoreTestimonyRequest $request)
     {
         try {
@@ -57,6 +121,58 @@ class TestimonyController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/testimonies/update/{id}",
+     *     summary="Update a testimony",
+     *     tags={"Testimonies"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="image", type="string", format="binary"),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="business_name", type="string", example="John's Business"),
+     *                 @OA\Property(property="description", type="string", example="This is a testimony description")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data updated successfully!"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="image", type="string", example="testimony_images/example.jpg"),
+     *                 @OA\Property(property="name", type="string", example="John Doe"),
+     *                 @OA\Property(property="business_name", type="string", example="John's Business"),
+     *                 @OA\Property(property="description", type="string", example="This is a testimony description")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Error occurred while updating data: error message")
+     *         )
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $testimony = Testimonies::find($id);
@@ -98,6 +214,40 @@ class TestimonyController extends Controller
         }
     }
 
+     /**
+     * @OA\Delete(
+     *     path="/testimonies/delete/{id}",
+     *     summary="Delete a testimony",
+     *     tags={"Testimonies"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data successfully deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data successfully deleted!")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Data not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error occurred",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Error occurred while deleting data: error message")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $testimonies = Testimonies::find($id);
