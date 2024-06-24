@@ -74,7 +74,7 @@ Route::prefix('banner')->group(function () {
 });
 
 // Grouping routes for Our Service
-Route::prefix('ourservice')->group(function () {
+Route::prefix('our-service')->group(function () {
     Route::get('/', [OurServiceController::class, 'index']);
     Route::post('/add', [OurServiceController::class, 'store']);
     Route::post('/update/{id}', [OurServiceController::class, 'update']);
@@ -82,7 +82,7 @@ Route::prefix('ourservice')->group(function () {
 });
 
 // Grouping routes for Our Team
-Route::prefix('ourteam')->group(function () {
+Route::prefix('our-team')->group(function () {
     Route::get('/', [OurTeamController::class, 'index']);
     Route::post('/add', [OurTeamController::class, 'store']);
     Route::post('/update/{id}', [OurTeamController::class, 'update']);
