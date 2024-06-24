@@ -36,35 +36,57 @@ Route::middleware('auth:api')->group(function () {
     //     }
     // });
 
-    Route::get('/about_us', [AboutUsController::class, 'index']);
-    Route::post('/about_us/add', [AboutUsController::class, 'store']);
-    Route::post('/about_us/update/{id}', [AboutUsController::class, 'update']);
-    Route::delete('/about_us/delete/{id}', [AboutUsController::class, 'destroy']);
+// Grouping routes for About Us
+Route::prefix('about-us')->group(function () {
+    Route::get('/', [AboutUsController::class, 'index']);
+    Route::post('/add', [AboutUsController::class, 'store']);
+    Route::post('/update/{id}', [AboutUsController::class, 'update']);
+    Route::delete('/delete/{id}', [AboutUsController::class, 'destroy']);
+});
 
-    Route::get('/contact_us', [ContactUsController::class, 'index']);
-    Route::post('/contact_us/add', [ContactUsController::class, 'store']);
-    Route::post('/contact_us/update/{id}', [ContactUsController::class, 'update']);
-    Route::delete('/contact_us/delete/{id}', [ContactUsController::class, 'destroy']);
+// Grouping routes for Contact Us
+Route::prefix('contact-us')->group(function () {
+    Route::get('/', [ContactUsController::class, 'index']);
+    Route::post('/add', [ContactUsController::class, 'store']);
+    Route::post('/update/{id}', [ContactUsController::class, 'update']);
+    Route::delete('/delete/{id}', [ContactUsController::class, 'destroy']);
+});
 
-    Route::get('/social_media', [SocialMediaController::class, 'index']);
+// Grouping routes for Social Media
+Route::prefix('social-media')->group(function () {
+    Route::get('/', [SocialMediaController::class, 'index']);
+});
 
-    Route::get('/testimonies', [TestimonyController::class, 'index']);
-    Route::post('/testimonies/add', [TestimonyController::class, 'store']);
-    Route::post('/testimonies/update/{id}', [TestimonyController::class, 'update']);
-    Route::delete('/testimonies/delete/{id}', [TestimonyController::class, 'destroy']);
+// Grouping routes for Testimonies
+Route::prefix('testimonies')->group(function () {
+    Route::get('/', [TestimonyController::class, 'index']);
+    Route::post('/add', [TestimonyController::class, 'store']);
+    Route::post('/update/{id}', [TestimonyController::class, 'update']);
+    Route::delete('/delete/{id}', [TestimonyController::class, 'destroy']);
+});
 
-    Route::get('/banner', [BannerController::class, 'index']);
-    Route::post('/banner/add', [BannerController::class, 'store']);
-    Route::post('/banner/update/{id}', [BannerController::class, 'update']);
-    Route::delete('/banner/delete/{id}', [BannerController::class, 'destroy']);
+// Grouping routes for Banner
+Route::prefix('banner')->group(function () {
+    Route::get('/', [BannerController::class, 'index']);
+    Route::post('/add', [BannerController::class, 'store']);
+    Route::post('/update/{id}', [BannerController::class, 'update']);
+    Route::delete('/delete/{id}', [BannerController::class, 'destroy']);
+});
 
-    Route::get('/ourservice', [OurServiceController::class, 'index']);
-    Route::post('/ourservice/add', [OurServiceController::class, 'store']);
-    Route::post('/ourservice/update/{id}', [OurServiceController::class, 'update']);
-    Route::delete('/ourservice/delete/{id}', [OurServiceController::class, 'destroy']);
+// Grouping routes for Our Service
+Route::prefix('ourservice')->group(function () {
+    Route::get('/', [OurServiceController::class, 'index']);
+    Route::post('/add', [OurServiceController::class, 'store']);
+    Route::post('/update/{id}', [OurServiceController::class, 'update']);
+    Route::delete('/delete/{id}', [OurServiceController::class, 'destroy']);
+});
 
-    Route::get('/ourteam', [OurTeamController::class, 'index']);
-    Route::post('/ourteam/add', [OurTeamController::class, 'store']);
-    Route::post('/ourteam/update/{id}', [OurTeamController::class, 'update']);
-    Route::delete('/ourteam/delete/{id}', [OurTeamController::class, 'destroy']);
+// Grouping routes for Our Team
+Route::prefix('ourteam')->group(function () {
+    Route::get('/', [OurTeamController::class, 'index']);
+    Route::post('/add', [OurTeamController::class, 'store']);
+    Route::post('/update/{id}', [OurTeamController::class, 'update']);
+    Route::delete('/delete/{id}', [OurTeamController::class, 'destroy']);
+});
+
 });
